@@ -11,7 +11,6 @@ const signup = async (req, res) => {
     if (checkUser) return responseHandler.badrequest(res, "username already used");
 
     const user = new userModel();
-
     user.displayName = displayName;
     user.username = username;
     user.setPassword(password);
@@ -20,15 +19,16 @@ const signup = async (req, res) => {
 
     const token = jsonwebtoken.sign(
       { data: user.id },
-      process.env.TOKEN_SECRET,
+      process.env.TOKEN_SECRET_KEY,
       { expiresIn: "24h" }
     );
-
+    
     responseHandler.created(res, {
       token,
       ...user._doc,
       id: user.id
     });
+
   } catch {
     responseHandler.error(res);
   }
@@ -46,7 +46,7 @@ const signin = async (req, res) => {
 
     const token = jsonwebtoken.sign(
       { data: user.id },
-      process.env.TOKEN_SECRET,
+      process.env.TOKEN_SECRET_KEY,
       { expiresIn: "24h" }
     );
 
