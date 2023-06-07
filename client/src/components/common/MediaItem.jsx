@@ -115,7 +115,7 @@ const MediaItem = ({ media, mediaType }) => {
         {/* movie or tv item */}
 
         {/* people */}
-        {mediaType === "people" && (
+        {/* {mediaType === "people" && (
           <Box sx={{
             position: "absolute",
             width: "100%",
@@ -128,7 +128,7 @@ const MediaItem = ({ media, mediaType }) => {
               {media.name}
             </Typography>
           </Box>
-        )}
+        )} */}
         {/* people */}
       </Box>
     </Link>

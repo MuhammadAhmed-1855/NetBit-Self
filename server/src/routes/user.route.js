@@ -67,21 +67,7 @@ router.put(
 );
 
 
-router.put(
-  "/subscribe",
-  tokenMiddleware.auth,
-  
-  requestHandler.validate,
-  userController.Subcribe
-);
 
-router.put(
-  "/unsubscribe",
-  tokenMiddleware.auth,
-  
-  requestHandler.validate,
-  userController.UnSubcribe
-);
 
 
 

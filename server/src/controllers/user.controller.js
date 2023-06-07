@@ -1,6 +1,19 @@
 import userModel from "../models/user.model.js";
 import jsonwebtoken from "jsonwebtoken";
 import responseHandler from "../handlers/response.handler.js";
+import subModel from "../models/subModel.js";
+
+
+const createSub = async (id) => {
+
+  try{
+    const sub = new subModel( {userid:id});
+    await sub.save()
+  }
+  catch{
+    responseHandler.error(res);
+  }
+};
 
 const signup = async (req, res) => {
   try {
@@ -16,6 +29,7 @@ const signup = async (req, res) => {
     user.setPassword(password);
 
     await user.save();
+    createSub(user.id)
 
     const token = jsonwebtoken.sign(
       { data: user.id },
@@ -96,55 +110,12 @@ const getInfo = async (req, res) => {
 };
 
 
-const Subcribe = async (req, res) =>{
 
-  try {
-    console.log("alien")
-    const user = await userModel.findById(req.user.id);
-
-
-    if (!user) return responseHandler.unauthorize(res);
-
-   
-
-    user.subscription = "premium"
-
-    await user.save();
-
-    responseHandler.ok(res);
-  } catch {
-    responseHandler.error(res);
-  }
-
-}
-
-const UnSubcribe = async (req, res) =>{
-
-  try {
-   
-    const user = await userModel.findById(req.user.id);
-
-
-    if (!user) return responseHandler.unauthorize(res);
-
-   
-
-    user.subscription = "free"
-
-    await user.save();
-
-    responseHandler.ok(res);
-  } catch {
-    responseHandler.error(res);
-  }
-
-}
 
 export default {
   signup,
   signin,
   getInfo,
   updatePassword,
-  Subcribe,
-  UnSubcribe
+ 
 };

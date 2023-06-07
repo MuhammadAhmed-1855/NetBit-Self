@@ -6,8 +6,9 @@ const userEndpoints = {
   signup: "user/signup",
   getInfo: "user/info",
   passwordUpdate: "user/update-password",
-  subscribe: "user/subscribe",
-  unsubscribe: "user/unsubscribe"
+  subscribe: "sub/subscribe",
+  unsubscribe: "sub/unsubscribe",
+  pay: "sub/pay"
 
 };
 
@@ -52,9 +53,9 @@ const userApi = {
   },
   subscribe: async () => {
     try {
-      
+      console.log("modelll")
       const response = await privateClient.put(
-
+       
         userEndpoints.subscribe,
         {  }
       );
@@ -72,6 +73,18 @@ const userApi = {
         {  }
       );
       console.log("jezzi")
+
+      return { response };
+    } catch (err) { return { err }; }
+  },
+  pay: async () => {
+    try {
+      
+      const response = await privateClient.put(
+
+        userEndpoints.pay,
+        {  }
+      );
 
       return { response };
     } catch (err) { return { err }; }

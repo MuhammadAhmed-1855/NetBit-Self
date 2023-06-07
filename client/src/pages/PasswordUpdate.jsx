@@ -4,19 +4,23 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Container from "../components/common/Container";
 import uiConfigs from "../configs/ui.configs";
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import userApi from "../api/modules/user.api";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/features/userSlice";
 import { useSelector } from "react-redux";
 import { setAuthModalOpen } from "../redux/features/authModalSlice";
+import PaymentIcon from '@mui/icons-material/Payment';
 
 const PasswordUpdate = () => {
   const [onRequest, setOnRequest] = useState(false);
   const [onSubscribe, setOnSubscribe] = useState(false);
   const { user } = useSelector((state) => state.user);
+ 
+
+  
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -63,10 +67,10 @@ const PasswordUpdate = () => {
 
   const onUpdate2 = async (values) => {
     if (onSubscribe) return;
-    setOnSubscribe(true);
-    console.log("ahmeee")
-
+    setOnSubscribe(true);    
+    console.log(user.subscription)
     if(user.subscription === "free" ){
+     
       const { response, err } = await userApi.subscribe();
       setOnSubscribe(false);
 
@@ -78,6 +82,7 @@ const PasswordUpdate = () => {
         dispatch(setAuthModalOpen(true));
         toast.success("subcribe successfull Please re-login");
       }
+      
     }
     else if(user.subscription === "premium"){
       
@@ -93,13 +98,34 @@ const PasswordUpdate = () => {
         toast.success("unsubcribed Please re-login");
       }
     }
-    
 
-   
+    
+  }
+  
+
+    const onUpdate3 = async (values) => {
+        const { response, err } = await userApi.pay();
+        if (err) toast.error(err.message);
+        if (response) {
+          form.resetForm();
+          navigate("/");
+          dispatch(setUser(null));
+          dispatch(setAuthModalOpen(true));
+          toast.success("Payment complete relogin");
+        }
+
+        
   };
 
+  const reload = () =>{
+
+    window.location.reload()
+  }
+
   return (
+    
     <Box sx={{ ...uiConfigs.style.mainContent }}>
+      
       <Container header="update password">
         <Box component="form" maxWidth="400px" onSubmit={form.handleSubmit}>
           <Stack spacing={2}>
@@ -153,6 +179,7 @@ const PasswordUpdate = () => {
       </Container>
 
       <Container header="Subscription">
+        <h1>{user.subscription}</h1>
         <Box maxWidth="400px" >
           <Stack spacing={2}>
            
@@ -173,7 +200,32 @@ const PasswordUpdate = () => {
               
             </LoadingButton>
 
+            <LoadingButton
+              type="submit"
+              variant="contained"
+              fullWidth
+              sx={{ marginTop: 4 }}
+              loading={onSubscribe}
+              onClick={onUpdate3}
+            >
+             <a href="https://retailer.easypaisa.com.pk/merchantportal/#!bG9naW4"  > <PaymentIcon/> </a>
+
+            </LoadingButton>
+
            
+
+            <LoadingButton
+              type="submit"
+              variant="contained"
+              fullWidth
+              sx={{ marginTop: 4 }}
+              
+              onClick={ reload }
+            >
+             
+                Show subcription Status
+            </LoadingButton>
+
           </Stack>
         </Box>
       </Container>
