@@ -95,9 +95,56 @@ const getInfo = async (req, res) => {
   }
 };
 
+
+const Subcribe = async (req, res) =>{
+
+  try {
+    console.log("alien")
+    const user = await userModel.findById(req.user.id);
+
+
+    if (!user) return responseHandler.unauthorize(res);
+
+   
+
+    user.subscription = "premium"
+
+    await user.save();
+
+    responseHandler.ok(res);
+  } catch {
+    responseHandler.error(res);
+  }
+
+}
+
+const UnSubcribe = async (req, res) =>{
+
+  try {
+   
+    const user = await userModel.findById(req.user.id);
+
+
+    if (!user) return responseHandler.unauthorize(res);
+
+   
+
+    user.subscription = "free"
+
+    await user.save();
+
+    responseHandler.ok(res);
+  } catch {
+    responseHandler.error(res);
+  }
+
+}
+
 export default {
   signup,
   signin,
   getInfo,
-  updatePassword
+  updatePassword,
+  Subcribe,
+  UnSubcribe
 };

@@ -4,7 +4,8 @@ import LiveTvOutlinedIcon from "@mui/icons-material/LiveTvOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import RateReviewOutlinedIcon from "@mui/icons-material/RateReviewOutlined";
-import LockResetOutlinedIcon from "@mui/icons-material/LockResetOutlined";
+
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts"
 
 const main = [
   {
@@ -47,9 +48,9 @@ const user = [
     state: "reviews"
   },
   {
-    display: "password update",
+    display: "Manage Accounts",
     path: "/password-update",
-    icon: <LockResetOutlinedIcon />,
+    icon: <ManageAccountsIcon />,
     state: "password.update"
   }
 ];

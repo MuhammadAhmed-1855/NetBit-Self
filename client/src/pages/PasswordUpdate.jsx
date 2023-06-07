@@ -10,10 +10,13 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/features/userSlice";
+import { useSelector } from "react-redux";
 import { setAuthModalOpen } from "../redux/features/authModalSlice";
 
 const PasswordUpdate = () => {
   const [onRequest, setOnRequest] = useState(false);
+  const [onSubscribe, setOnSubscribe] = useState(false);
+  const { user } = useSelector((state) => state.user);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -36,7 +39,8 @@ const PasswordUpdate = () => {
         .min(8, "confirmNewPassword minimum 8 characters")
         .required("confirmNewPassword is required")
     }),
-    onSubmit: async values => onUpdate(values)
+    onSubmit: async values => onUpdate(values), 
+    
   });
 
   const onUpdate = async (values) => {
@@ -55,6 +59,43 @@ const PasswordUpdate = () => {
       dispatch(setAuthModalOpen(true));
       toast.success("Update password success! Please re-login");
     }
+  };
+
+  const onUpdate2 = async (values) => {
+    if (onSubscribe) return;
+    setOnSubscribe(true);
+    console.log("ahmeee")
+
+    if(user.subscription === "free" ){
+      const { response, err } = await userApi.subscribe();
+      setOnSubscribe(false);
+
+      if (err) toast.error(err.message);
+      if (response) {
+        form.resetForm();
+        navigate("/");
+        dispatch(setUser(null));
+        dispatch(setAuthModalOpen(true));
+        toast.success("subcribe successfull Please re-login");
+      }
+    }
+    else if(user.subscription === "premium"){
+      
+      const { response, err } = await userApi.unsubscribe();
+      setOnSubscribe(false);
+
+      if (err) toast.error(err.message);
+      if (response) {
+        form.resetForm();
+        navigate("/");
+        dispatch(setUser(null));
+        dispatch(setAuthModalOpen(true));
+        toast.success("unsubcribed Please re-login");
+      }
+    }
+    
+
+   
   };
 
   return (
@@ -105,6 +146,34 @@ const PasswordUpdate = () => {
             >
               update password
             </LoadingButton>
+
+           
+          </Stack>
+        </Box>
+      </Container>
+
+      <Container header="Subscription">
+        <Box maxWidth="400px" >
+          <Stack spacing={2}>
+           
+
+            <LoadingButton
+              type="submit"
+              variant="contained"
+              fullWidth
+              sx={{ marginTop: 4 }}
+              loading={onSubscribe}
+              onClick={onUpdate2}
+            >
+              {
+                user.subscription === "premium" ? "Unsubcribe":"Subscribe" 
+
+
+              }            
+              
+            </LoadingButton>
+
+           
           </Stack>
         </Box>
       </Container>

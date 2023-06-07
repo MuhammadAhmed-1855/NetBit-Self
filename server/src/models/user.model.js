@@ -17,6 +17,11 @@ const userSchema = new mongoose.Schema({
     required: true,
     select: false
   },
+  subscription:{
+    type: String,
+    default: "Free"
+  },
+  
   salt: {
     type: String,
     required: true,

@@ -66,6 +66,25 @@ router.put(
   userController.updatePassword
 );
 
+
+router.put(
+  "/subscribe",
+  tokenMiddleware.auth,
+  
+  requestHandler.validate,
+  userController.Subcribe
+);
+
+router.put(
+  "/unsubscribe",
+  tokenMiddleware.auth,
+  
+  requestHandler.validate,
+  userController.UnSubcribe
+);
+
+
+
 router.get(
   "/info",
   tokenMiddleware.auth,

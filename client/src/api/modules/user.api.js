@@ -5,7 +5,10 @@ const userEndpoints = {
   signin: "user/signin",
   signup: "user/signup",
   getInfo: "user/info",
-  passwordUpdate: "user/update-password"
+  passwordUpdate: "user/update-password",
+  subscribe: "user/subscribe",
+  unsubscribe: "user/unsubscribe"
+
 };
 
 const userApi = {
@@ -46,7 +49,36 @@ const userApi = {
 
       return { response };
     } catch (err) { return { err }; }
-  }
+  },
+  subscribe: async () => {
+    try {
+      
+      const response = await privateClient.put(
+
+        userEndpoints.subscribe,
+        {  }
+      );
+
+      return { response };
+    } catch (err) { return { err }; }
+  },
+
+  unsubscribe: async () => {
+    try {
+      console.log("sule")
+      const response = await privateClient.put(
+        
+        userEndpoints.unsubscribe,
+        {  }
+      );
+      console.log("jezzi")
+
+      return { response };
+    } catch (err) { return { err }; }
+  },
+
+
+
 };
 
 export default userApi;
