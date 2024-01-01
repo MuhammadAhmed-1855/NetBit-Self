@@ -4,7 +4,7 @@ FROM node:14-alpine as builder
 WORKDIR /build
 
 # Copy only package.json and package-lock.json to take advantage of Docker layer caching
-COPY package*.json ./
+COPY server/package*.json ./
 
 # Install only production dependencies
 RUN npm install --production
@@ -15,7 +15,7 @@ FROM node:14-alpine
 WORKDIR /app
 
 # Copy only necessary files from the builder image
-COPY --from=builder /build/node_modules ./node_modules
+COPY --from=builder /build/node_modules ./server/node_modules
 COPY . .
 
 # Expose the port
